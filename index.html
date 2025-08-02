@@ -1,205 +1,61 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FuturoLogia AI - Previsões de Futebol com IA</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap">
-  <style>
-    :root {
-      --primary: #2563EB;
-      --primary-dark: #1E40AF;
-      --secondary: #10B981;
-      --dark: #1F2937;
-      --light: #F3F4F6;
-      --white: #FFFFFF;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Montserrat', sans-serif;
-      color: var(--dark);
-      line-height: 1.6;
-      background-color: var(--light);
-    }
-    
-    .hero {
-      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                  url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
-      background-size: cover;
-      background-position: center;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      text-align: center;
-      color: var(--white);
-      padding: 0 2rem;
-    }
-    
-    .hero-content {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    h1 {
-      font-size: 3.5rem;
-      margin-bottom: 1.5rem;
-      font-weight: 700;
-    }
-    
-    .subtitle {
-      font-size: 1.5rem;
-      margin-bottom: 3rem;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .btn {
-      display: inline-block;
-      padding: 1rem 2rem;
-      margin: 0 1rem;
-      border-radius: 50px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-size: 1.1rem;
-    }
-    
-    .btn-primary {
-      background-color: var(--primary);
-      color: var(--white);
-      border: 2px solid var(--primary);
-    }
-    
-    .btn-primary:hover {
-      background-color: var(--primary-dark);
-      border-color: var(--primary-dark);
-    }
-    
-    .btn-secondary {
-      background-color: transparent;
-      color: var(--white);
-      border: 2px solid var(--white);
-    }
-    
-    .btn-secondary:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-    
-    .features {
-      padding: 5rem 2rem;
-      background-color: var(--white);
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    .section-title {
-      text-align: center;
-      font-size: 2.5rem;
-      margin-bottom: 3rem;
-      color: var(--dark);
-    }
-    
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-    
-    .feature-card {
-      background: var(--light);
-      padding: 2rem;
-      border-radius: 10px;
-      text-align: center;
-      transition: transform 0.3s ease;
-    }
-    
-    .feature-card:hover {
-      transform: translateY(-10px);
-    }
-    
-    .feature-icon {
-      font-size: 3rem;
-      margin-bottom: 1.5rem;
-      color: var(--primary);
-    }
-    
-    .feature-title {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
-    
-    footer {
-      background-color: var(--dark);
-      color: var(--white);
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-    }
-    
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2.5rem;
-      }
-      
-      .subtitle {
-        font-size: 1.2rem;
-      }
-      
-      .btn {
-        display: block;
-        margin: 1rem auto;
-        max-width: 250px;
-      }
-    }
-  </style>
+  <!-- Metadados existentes... -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Previsões de Futebol Impulsionadas por IA</h1>
-      <p class="subtitle">Obtenha análises estatísticas avançadas e previsões precisas para os principais campeonatos de futebol</p>
-      <div class="cta-buttons">
-        <a href="#predictions" class="btn btn-primary">Ver Previsões</a>
-        <a href="#demo" class="btn btn-secondary">Ver Demonstração</a>
-      </div>
-    </div>
-  </section>
+  <!-- Seção Hero existente... -->
 
-  <section class="features">
+  <section class="analysis-tool">
     <div class="container">
-      <h2 class="section-title">Nossos Recursos</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3 class="feature-title">Análise Estatística</h3>
-          <p>Dados detalhados de desempenho dos times e jogadores com mais de 50 métricas diferentes</p>
+      <h2 class="section-title">Análise de Confronto</h2>
+      
+      <div class="analysis-form">
+        <div class="form-group">
+          <label for="league-select">Campeonato:</label>
+          <select id="league-select" class="form-control">
+            <option value="">Carregando...</option>
+          </select>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🤖</div>
-          <h3 class="feature-title">Modelos de IA</h3>
-          <p>Previsões baseadas em machine learning com 85% de precisão comprovada</p>
+
+        <div class="form-group">
+          <label for="home-team">Time Mandante:</label>
+          <select id="home-team" class="form-control" disabled>
+            <option value="">Selecione um campeonato primeiro</option>
+          </select>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🌎</div>
-          <h3 class="feature-title">Cobertura Completa</h3>
-          <p>Todos os principais campeonatos nacionais e internacionais atualizados em tempo real</p>
+
+        <div class="form-group">
+          <label for="away-team">Time Visitante:</label>
+          <select id="away-team" class="form-control" disabled>
+            <option value="">Selecione um campeonato primeiro</option>
+          </select>
+        </div>
+
+        <button id="analyze-btn" class="btn btn-primary btn-large">
+          <i class="fas fa-chart-line"></i> Analisar Confronto
+        </button>
+      </div>
+
+      <div id="analysis-results" class="results-container hidden">
+        <div class="stats-grid">
+          <!-- Estatísticas serão inseridas aqui via JavaScript -->
+        </div>
+        
+        <div class="recommendation-card">
+          <h3><i class="fas fa-lightbulb"></i> Recomendação da IA</h3>
+          <div id="ai-recommendation" class="recommendation-text">
+            <!-- Recomendação será inserida aqui -->
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <footer>
-    <p>© 2023 FuturoLogia.AI. Todos os direitos reservados.</p>
-  </footer>
+  <!-- Seções existentes... -->
+
+  <script src="js/api.js"></script>
+  <script src="js/analysis.js"></script>
 </body>
 </html>
