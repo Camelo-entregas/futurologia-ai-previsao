@@ -1,21 +1,74 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Futurologia AI</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; text-align: center; padding-top: 50px; }
-    h1 { color: #1e1e1e; }
-    p { color: #444; max-width: 500px; margin: 0 auto; }
-    .btn { padding: 10px 20px; margin: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futurologia AI - Previsões de Futebol com IA</title>
+  <meta name="description" content="Previsões precisas de jogos de futebol usando inteligência artificial">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="assets/logo.svg">
 </head>
 <body>
-  <h1>⚽ Futurologia AI</h1>
-  <p>Este projeto usa inteligência artificial para prever resultados de partidas de futebol com base em dados históricos, estatísticas e machine learning.</p>
-  <button class="btn">Ver previsões</button>
-  <button class="btn">Login</button>
-  <button class="btn">Sobre o projeto</button>
+  <header>
+    <div class="container">
+      <img src="assets/logo.svg" alt="Futurologia AI Logo" class="logo">
+      <nav>
+        <ul>
+          <li><a href="#features">Recursos</a></li>
+          <li><a href="#about">Sobre</a></li>
+          <li><a href="#contact">Contato</a></li>
+        </ul>
+      </nav>
+      <div class="auth-buttons">
+        <button id="loginBtn" class="btn btn-outline">Login</button>
+        <button id="signupBtn" class="btn btn-primary">Cadastre-se</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Previsões de Futebol Impulsionadas por IA</h1>
+        <p class="subtitle">Obtenha análises estatísticas avançadas e previsões precisas para os principais campeonatos de futebol</p>
+        <div class="cta-buttons">
+          <button id="predictionsBtn" class="btn btn-primary btn-large">Ver Previsões</button>
+          <button id="demoBtn" class="btn btn-secondary btn-large">Ver Demonstração</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="features">
+      <div class="container">
+        <h2>Nossos Recursos</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Análise Estatística</h3>
+            <p>Dados detalhados de desempenho dos times e jogadores</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>Modelos de IA</h3>
+            <p>Previsões baseadas em machine learning com 85% de precisão</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚽</div>
+            <h3>Cobertura Completa</h3>
+            <p>Todos os principais campeonatos nacionais e internacionais</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2023 Futurologia AI. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
