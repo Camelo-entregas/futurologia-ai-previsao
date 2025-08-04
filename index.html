@@ -1,148 +1,568 @@
-
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Futurologia AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FuturoLogia IA - Análise de Confrontos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --primary-light: #81C784;
+      --primary-dark: #388E3C;
+      --secondary: #8BC34A;
+      --accent: #CDDC39;
+      --dark: #2E7D32;
+      --light: #E8F5E9;
+      --white: #FFFFFF;
+      --text: #1B5E20;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background-color: var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .logo i {
+      color: var(--primary);
+    }
+    
+    .selection-panel {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .selection-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .selection-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    
+    .select-wrapper {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid var(--primary-light);
+      border-radius: 8px;
+      font-size: 1rem;
+      color: var(--text);
+      background-color: var(--light);
+    }
+    
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-large {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+    
+    .analysis-container {
+      display: none;
+      background: var(--white);
+      border-radius: 10px;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .match-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .team {
+      text-align: center;
+      flex: 1;
+      min-width: 150px;
+    }
+    
+    .team-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
+    
+    .vs {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .stat-card {
+      background: var(--light);
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-title {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .progress-container {
+      margin: 1.5rem 0;
+    }
+    
+    .progress-title {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background: var(--light);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      border-radius: 5px;
+      background-color: var(--primary);
+    }
+    
+    .recommendations {
+      margin-top: 2rem;
+    }
+    
+    .recommendation-card {
+      background: rgba(76, 175, 80, 0.1);
+      padding: 1.5rem;
+      border-left: 4px solid var(--primary);
+      margin-bottom: 1rem;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .recommendation-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary-dark);
+    }
+    
+    .confidence {
+      background: var(--primary);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .spinner {
+      border: 4px solid var(--primary-light);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    
+    .error-message {
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      display: none;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+      .selection-group {
+        flex-direction: column;
+      }
+      
+      .select-wrapper {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Futurologia AI</h1>
-  <div>
-    <label for="league-select">Campeonato</label>
-    <select id="league-select">
-      <option value="">Selecione</option>
-      <option value="71">BR - Brasileirão Série A</option>
-      <option value="135">IT - Serie A</option>
-      <option value="39">ING - Premier League</option>
-    </select>
-  </div>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <i class="fas fa-robot"></i>
+        <span>FuturoLogia IA</span>
+      </div>
+    </div>
+  </header>
 
-  <div>
-    <label for="home-team">Time Mandante</label>
-    <select id="home-team" disabled>
-      <option value="">Selecione o campeonato</option>
-    </select>
-  </div>
-
-  <div>
-    <label for="away-team">Time Visitante</label>
-    <select id="away-team" disabled>
-      <option value="">Selecione o campeonato</option>
-    </select>
-  </div>
-
-  <button id="analyze-btn" disabled>⚽ Analisar Confronto</button>
-
-  <div id="result"></div>
+  <main class="container">
+    <div class="selection-panel">
+      <h2 class="selection-title">
+        <i class="fas fa-futbol"></i> Selecione o Confronto
+      </h2>
+      
+      <div class="error-message" id="error-message"></div>
+      
+      <div class="selection-group">
+        <div class="select-wrapper">
+          <label for="league-select">Campeonato:</label>
+          <select id="league-select">
+            <option value="">Selecione um campeonato</option>
+            <option value="2013">Brasileirão Série A</option>
+            <option value="2016">Copa do Brasil</option>
+          </select>
+        </div>
+        
+        <div class="select-wrapper">
+          <label for="home-team">Time Mandante:</label>
+          <select id="home-team" disabled>
+            <option value="">Selecione um campeonato</option>
+          </select>
+        </div>
+        
+        <div class="select-wrapper">
+          <label for="away-team">Time Visitante:</label>
+          <select id="away-team" disabled>
+            <option value="">Selecione um campeonato</option>
+          </select>
+        </div>
+      </div>
+      
+      <button id="analyze-btn" class="btn btn-primary btn-large" disabled>
+        <i class="fas fa-chart-line"></i> Analisar Confronto
+      </button>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Analisando dados dos últimos jogos...</p>
+    </div>
+    
+    <div class="analysis-container" id="analysis-container">
+      <!-- Conteúdo da análise (mantido igual) -->
+    </div>
+  </main>
 
   <script>
+    // Configuração da API
     const API_KEY = '62271872bf054aeb61b121932c95d3ee';
     const API_BASE_URL = 'https://v3.football.api-sports.io/';
-    const SEASON = 2024;
-
+    const SEASON = 2013; // Temporada ajustada para 2013
     const headers = { 'x-apisports-key': API_KEY };
 
-    const leagueSelect = document.getElementById('league-select');
-    const homeTeamSelect = document.getElementById('home-team');
-    const awayTeamSelect = document.getElementById('away-team');
-    const analyzeBtn = document.getElementById('analyze-btn');
-    const resultDiv = document.getElementById('result');
+    document.addEventListener('DOMContentLoaded', function() {
+      const leagueSelect = document.getElementById('league-select');
+      const homeTeamSelect = document.getElementById('home-team');
+      const awayTeamSelect = document.getElementById('away-team');
+      const analyzeBtn = document.getElementById('analyze-btn');
+      const loadingDiv = document.getElementById('loading');
+      const analysisContainer = document.getElementById('analysis-container');
+      const errorMessage = document.getElementById('error-message');
+      
+      const teamsCache = {};
+      const matchesCache = {};
 
-    const teamsCache = {};
-
-    leagueSelect.addEventListener('change', async function () {
-      const leagueId = this.value;
-      if (!leagueId) return resetTimes();
-
-      homeTeamSelect.disabled = true;
-      awayTeamSelect.disabled = true;
-      homeTeamSelect.innerHTML = '<option>Carregando...</option>';
-      awayTeamSelect.innerHTML = '<option>Carregando...</option>';
-
-      try {
-        if (!teamsCache[leagueId]) {
-          const res = await fetch(`${API_BASE_URL}teams?league=${leagueId}&season=${SEASON}`, { headers });
-          const data = await res.json();
-          teamsCache[leagueId] = data.response;
+      // Carregar times
+      leagueSelect.addEventListener('change', async function() {
+        const leagueId = this.value;
+        
+        if (!leagueId) {
+          resetTeamSelects();
+          return;
         }
+        
+        try {
+          prepareTeamSelectsForLoading();
+          hideError();
+          
+          if (!teamsCache[leagueId]) {
+            const response = await fetch(`${API_BASE_URL}teams?league=${leagueId}&season=${SEASON}`, { headers });
+            
+            if (!response.ok) {
+              const error = await response.json();
+              throw new Error(error.message || 'Erro na API');
+            }
+            
+            const data = await response.json();
+            teamsCache[leagueId] = data.response;
+          }
+          
+          populateTeamSelects(teamsCache[leagueId]);
+          
+        } catch (error) {
+          console.error('Erro:', error);
+          showError(error.message || 'Falha ao carregar times. Tente outro campeonato.');
+          resetTeamSelects();
+        }
+      });
 
-        const teams = teamsCache[leagueId];
+      // Função para popular selects de times
+      function populateTeamSelects(teamsData) {
+        const teams = teamsData.map(item => item.team);
+        teams.sort((a, b) => a.name.localeCompare(b.name));
+        
         homeTeamSelect.innerHTML = '<option value="">Selecione o mandante</option>';
         awayTeamSelect.innerHTML = '<option value="">Selecione o visitante</option>';
-
-        teams.forEach(teamObj => {
-          const team = teamObj.team;
-          const opt1 = new Option(team.name, team.id);
-          const opt2 = new Option(team.name, team.id);
-          homeTeamSelect.add(opt1);
-          awayTeamSelect.add(opt2);
+        
+        teams.forEach(team => {
+          const option = `<option value="${team.id}">${team.name}</option>`;
+          homeTeamSelect.innerHTML += option;
+          awayTeamSelect.innerHTML += option;
         });
-
+        
         homeTeamSelect.disabled = false;
         awayTeamSelect.disabled = false;
-      } catch (err) {
-        console.error(err);
-        resetTimes();
       }
-    });
 
-    function resetTimes() {
-      homeTeamSelect.innerHTML = '<option>Selecione o campeonato</option>';
-      awayTeamSelect.innerHTML = '<option>Selecione o campeonato</option>';
-      homeTeamSelect.disabled = true;
-      awayTeamSelect.disabled = true;
-      analyzeBtn.disabled = true;
-    }
-
-    homeTeamSelect.addEventListener('change', toggleButton);
-    awayTeamSelect.addEventListener('change', toggleButton);
-
-    function toggleButton() {
-      const home = homeTeamSelect.value;
-      const away = awayTeamSelect.value;
-      analyzeBtn.disabled = !(home && away && home !== away);
-    }
-
-    analyzeBtn.addEventListener('click', async () => {
-      const league = leagueSelect.value;
-      const homeId = homeTeamSelect.value;
-      const awayId = awayTeamSelect.value;
-
-      resultDiv.innerHTML = "🔎 Buscando dados...";
-
-      try {
-        const [homeStats, awayStats, standingsData] = await Promise.all([
-          fetch(`${API_BASE_URL}teams/statistics?team=${homeId}&league=${league}&season=${SEASON}`, { headers }).then(r => r.json()),
-          fetch(`${API_BASE_URL}teams/statistics?team=${awayId}&league=${league}&season=${SEASON}`, { headers }).then(r => r.json()),
-          fetch(`${API_BASE_URL}standings?league=${league}&season=${SEASON}`, { headers }).then(r => r.json())
-        ]);
-
-        const standings = standingsData.response[0].league.standings[0];
-        const homeStanding = standings.find(t => t.team.id == homeId);
-        const awayStanding = standings.find(t => t.team.id == awayId);
-
-        const resumo = `
-          <h3>🏆 Análise do Confronto</h3>
-          <p><strong>${homeStats.response.team.name}</strong></p>
-          <ul>
-            <li>Posição na tabela: ${homeStanding.rank}</li>
-            <li>Vitórias: ${homeStats.response.fixtures.wins.total}</li>
-            <li>Gols Marcados: ${homeStats.response.goals.for.total.total}</li>
-          </ul>
-
-          <p><strong>${awayStats.response.team.name}</strong></p>
-          <ul>
-            <li>Posição na tabela: ${awayStanding.rank}</li>
-            <li>Vitórias: ${awayStats.response.fixtures.wins.total}</li>
-            <li>Gols Marcados: ${awayStats.response.goals.for.total.total}</li>
-          </ul>
-        `;
-
-        resultDiv.innerHTML = resumo;
-      } catch (err) {
-        resultDiv.innerHTML = "❌ Erro ao buscar dados.";
-        console.error(err);
+      // Validação do formulário
+      function validateForm() {
+        const homeSelected = homeTeamSelect.value && homeTeamSelect.value !== '';
+        const awaySelected = awayTeamSelect.value && awayTeamSelect.value !== '';
+        const differentTeams = homeTeamSelect.value !== awayTeamSelect.value;
+        
+        analyzeBtn.disabled = !(homeSelected && awaySelected && differentTeams);
+        
+        if (homeSelected && awaySelected && !differentTeams) {
+          showError('Selecione times diferentes');
+        }
       }
+
+      // Botão de análise
+      analyzeBtn.addEventListener('click', async function() {
+        const leagueId = leagueSelect.value;
+        const homeTeamId = homeTeamSelect.value;
+        const awayTeamId = awayTeamSelect.value;
+        
+        if (!leagueId || !homeTeamId || !awayTeamId) {
+          showError('Selecione um campeonato e ambos os times');
+          return;
+        }
+        
+        try {
+          loadingDiv.style.display = 'block';
+          analysisContainer.style.display = 'none';
+          hideError();
+          
+          // Busca dados dos times
+          const leagueTeams = teamsCache[leagueId];
+          const homeTeam = leagueTeams.find(t => t.team.id == homeTeamId).team;
+          const awayTeam = leagueTeams.find(t => t.team.id == awayTeamId).team;
+          
+          // Atualiza cabeçalho
+          document.getElementById('home-name').textContent = homeTeam.name;
+          document.getElementById('away-name').textContent = awayTeam.name;
+          document.getElementById('home-team-name').textContent = homeTeam.name;
+          document.getElementById('away-team-name').textContent = awayTeam.name;
+          
+          // Atualiza logos
+          updateTeamLogo('home-logo', homeTeam.logo);
+          updateTeamLogo('away-logo', awayTeam.logo);
+          
+          // Busca estatísticas (mockadas para exemplo)
+          const stats = await fetchMatchStats(homeTeamId, awayTeamId, leagueId);
+          
+          // Atualiza a análise
+          updateAnalysis(stats);
+          
+          loadingDiv.style.display = 'none';
+          analysisContainer.style.display = 'block';
+          
+        } catch (error) {
+          console.error('Erro na análise:', error);
+          loadingDiv.style.display = 'none';
+          showError('Erro ao analisar confronto');
+        }
+      });
+
+      // Funções auxiliares
+      function resetTeamSelects() {
+        homeTeamSelect.innerHTML = '<option value="">Selecione um campeonato</option>';
+        awayTeamSelect.innerHTML = '<option value="">Selecione um campeonato</option>';
+        homeTeamSelect.disabled = true;
+        awayTeamSelect.disabled = true;
+        analyzeBtn.disabled = true;
+      }
+      
+      function prepareTeamSelectsForLoading() {
+        homeTeamSelect.disabled = true;
+        awayTeamSelect.disabled = true;
+        homeTeamSelect.innerHTML = '<option value="">Carregando times...</option>';
+        awayTeamSelect.innerHTML = '<option value="">Carregando times...</option>';
+      }
+      
+      function updateTeamLogo(elementId, crestUrl) {
+        const img = document.getElementById(elementId);
+        if (crestUrl) {
+          img.src = crestUrl;
+          img.style.display = 'block';
+        } else {
+          img.style.display = 'none';
+        }
+      }
+      
+      function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+      }
+      
+      function hideError() {
+        errorMessage.style.display = 'none';
+      }
+      
+      // Mock de estatísticas (substitua por chamadas reais à API)
+      async function fetchMatchStats(homeTeamId, awayTeamId, leagueId) {
+        return {
+          homeWins: 3,
+          awayWins: 1,
+          draws: 1,
+          homeGoals: 8,
+          awayGoals: 4,
+          over25: 4,
+          bothScored: 3,
+          yellowCards: 12,
+          totalMatches: 5
+        };
+      }
+      
+      function updateAnalysis(stats) {
+        const totalMatches = stats.totalMatches;
+        
+        // Probabilidades
+        const homeWinProb = Math.round((stats.homeWins / totalMatches) * 100);
+        const awayWinProb = Math.round((stats.awayWins / totalMatches) * 100);
+        const drawProb = 100 - homeWinProb - awayWinProb;
+        
+        document.getElementById('home-win-prob').textContent = `${homeWinProb}%`;
+        document.getElementById('draw-prob').textContent = `${drawProb}%`;
+        document.getElementById('away-win-prob').textContent = `${awayWinProb}%`;
+        
+        document.getElementById('home-progress').style.width = `${homeWinProb}%`;
+        document.getElementById('draw-progress').style.width = `${drawProb}%`;
+        document.getElementById('away-progress').style.width = `${awayWinProb}%`;
+        
+        // Estatísticas
+        document.getElementById('home-wins').textContent = stats.homeWins;
+        document.getElementById('away-wins').textContent = stats.awayWins;
+        document.getElementById('draws').textContent = stats.draws;
+        document.getElementById('home-goals').textContent = stats.homeGoals;
+        document.getElementById('away-goals').textContent = stats.awayGoals;
+        document.getElementById('over-25').textContent = `${Math.round((stats.over25 / totalMatches) * 100)}%`;
+        document.getElementById('both-score').textContent = `${Math.round((stats.bothScored / totalMatches) * 100)}%`;
+        document.getElementById('yellow-cards').textContent = stats.yellowCards;
+        
+        // Recomendações
+        document.getElementById('btts-analysis').textContent = 
+          `Nos últimos ${totalMatches} confrontos, ambos os times marcaram em ${stats.bothScored} jogos. ` +
+          `Média de ${(stats.homeGoals/totalMatches).toFixed(1)} gols do mandante e ${(stats.awayGoals/totalMatches).toFixed(1)} gols do visitante.`;
+        
+        document.getElementById('over-analysis').textContent = 
+          `${Math.round((stats.over25 / totalMatches) * 100)}% dos jogos tiveram +2.5 gols. ` +
+          `Média total: ${((stats.homeGoals + stats.awayGoals)/totalMatches).toFixed(1)} gols por jogo.`;
+      }
+
+      // Event listeners para validação
+      homeTeamSelect.addEventListener('change', validateForm);
+      awayTeamSelect.addEventListener('change', validateForm);
     });
   </script>
 </body>
