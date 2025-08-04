@@ -1,17 +1,459 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- ... (mantenha todo o head igual) ... -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FuturoLogia IA - Análise de Confrontos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --primary-light: #81C784;
+      --primary-dark: #388E3C;
+      --secondary: #8BC34A;
+      --accent: #CDDC39;
+      --dark: #2E7D32;
+      --light: #E8F5E9;
+      --white: #FFFFFF;
+      --text: #1B5E20;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background-color: var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .logo i {
+      color: var(--primary);
+    }
+    
+    .selection-panel {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .selection-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .selection-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    
+    .select-wrapper {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid var(--primary-light);
+      border-radius: 8px;
+      font-size: 1rem;
+      color: var(--text);
+      background-color: var(--light);
+    }
+    
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-large {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+    
+    .analysis-container {
+      display: none;
+      background: var(--white);
+      border-radius: 10px;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .match-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .team {
+      text-align: center;
+      flex: 1;
+      min-width: 150px;
+    }
+    
+    .team-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
+    
+    .vs {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .stat-card {
+      background: var(--light);
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-title {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .progress-container {
+      margin: 1.5rem 0;
+    }
+    
+    .progress-title {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background: var(--light);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      border-radius: 5px;
+      background-color: var(--primary);
+    }
+    
+    .recommendations {
+      margin-top: 2rem;
+    }
+    
+    .recommendation-card {
+      background: rgba(76, 175, 80, 0.1);
+      padding: 1.5rem;
+      border-left: 4px solid var(--primary);
+      margin-bottom: 1rem;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .recommendation-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary-dark);
+    }
+    
+    .confidence {
+      background: var(--primary);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .spinner {
+      border: 4px solid var(--primary-light);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .error-message {
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .selection-group {
+        flex-direction: column;
+      }
+      
+      .select-wrapper {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- ... (mantenha todo o HTML igual) ... -->
+  <header>
+    <div class="container">
+      <div class="logo">
+        <i class="fas fa-robot"></i>
+        <span>FuturoLogia IA</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="selection-panel">
+      <h2 class="selection-title">
+        <i class="fas fa-futbol"></i> Selecione o Confronto
+      </h2>
+      
+      <div class="error-message" id="error-message"></div>
+      
+      <div class="selection-group">
+        <div class="select-wrapper">
+          <label for="league-select">Campeonato:</label>
+          <select id="league-select">
+            <option value="">Selecione um campeonato</option>
+            <option value="2013">Brasileirão Série A</option>
+            <option value="2021">Premier League</option>
+            <option value="2014">La Liga</option>
+            <option value="2019">Serie A (Itália)</option>
+            <option value="2002">Bundesliga</option>
+          </select>
+        </div>
+        
+        <div class="select-wrapper">
+          <label for="home-team">Time Mandante:</label>
+          <select id="home-team" disabled>
+            <option value="">Selecione um campeonato</option>
+          </select>
+        </div>
+        
+        <div class="select-wrapper">
+          <label for="away-team">Time Visitante:</label>
+          <select id="away-team" disabled>
+            <option value="">Selecione um campeonato</option>
+          </select>
+        </div>
+      </div>
+      
+      <button id="analyze-btn" class="btn btn-primary btn-large" disabled>
+        <i class="fas fa-chart-line"></i> Analisar Confronto
+      </button>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Analisando dados dos últimos jogos...</p>
+    </div>
+    
+    <div class="analysis-container" id="analysis-container">
+      <div class="match-header">
+        <div class="team">
+          <img id="home-logo" src="" alt="Time Mandante" class="team-logo" style="display: none;">
+          <h3 id="home-name">Time A</h3>
+        </div>
+        <div class="vs">VS</div>
+        <div class="team">
+          <img id="away-logo" src="" alt="Time Visitante" class="team-logo" style="display: none;">
+          <h3 id="away-name">Time B</h3>
+        </div>
+      </div>
+      
+      <h2 class="selection-title">
+        <i class="fas fa-chart-pie"></i> Probabilidades do Jogo
+      </h2>
+      
+      <div class="progress-container">
+        <div class="progress-title">
+          <span id="home-team-name">Time A</span>
+          <span id="home-win-prob">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="home-progress" style="width: 0%"></div>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-title">
+          <span>Empate</span>
+          <span id="draw-prob">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="draw-progress" style="width: 0%"></div>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-title">
+          <span id="away-team-name">Time B</span>
+          <span id="away-win-prob">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="away-progress" style="width: 0%"></div>
+        </div>
+      </div>
+      
+      <h2 class="selection-title">
+        <i class="fas fa-tachometer-alt"></i> Estatísticas dos Últimos Confrontos
+      </h2>
+      
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-title">Vitórias do Mandante</div>
+          <div class="stat-value" id="home-wins">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Vitórias do Visitante</div>
+          <div class="stat-value" id="away-wins">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Empates</div>
+          <div class="stat-value" id="draws">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Gols do Mandante</div>
+          <div class="stat-value" id="home-goals">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Gols do Visitante</div>
+          <div class="stat-value" id="away-goals">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Over 2.5 Gols</div>
+          <div class="stat-value" id="over-25">0%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Ambos Marcam</div>
+          <div class="stat-value" id="both-score">0%</div>
+        </div>
+      </div>
+      
+      <h2 class="selection-title">
+        <i class="fas fa-lightbulb"></i> Recomendações da IA
+      </h2>
+      
+      <div class="recommendations">
+        <div class="recommendation-card">
+          <h3 class="recommendation-title">
+            <i class="fas fa-bullseye"></i> Ambos Marcam (BTTS)
+            <span class="confidence">0% confiança</span>
+          </h3>
+          <p id="btts-analysis">Carregando análise...</p>
+        </div>
+        
+        <div class="recommendation-card">
+          <h3 class="recommendation-title">
+            <i class="fas fa-arrow-up"></i> Over 2.5 Gols
+            <span class="confidence">0% confiança</span>
+          </h3>
+          <p id="over-analysis">Carregando análise...</p>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <script>
-    // Configuração da API Football Data
-    const API_KEY = '62271872bf054aeb61b121932c95d3ee'; // SUA CHAVE JÁ INSERIDA
+    // Configuração da API
+    const API_KEY = '62271872bf054aeb61b121932c95d3ee';
     const API_BASE_URL = 'https://api.football-data.org/v4/';
     
     document.addEventListener('DOMContentLoaded', function() {
+      // Elementos DOM
       const leagueSelect = document.getElementById('league-select');
       const homeTeamSelect = document.getElementById('home-team');
       const awayTeamSelect = document.getElementById('away-team');
@@ -20,78 +462,60 @@
       const analysisContainer = document.getElementById('analysis-container');
       const errorMessage = document.getElementById('error-message');
       
-      // Cache para armazenar dados já buscados
+      // Cache
       const teamsCache = {};
       const matchesCache = {};
       
-      // Carregar times quando selecionar campeonato
-      leagueSelect.addEventListener('change', function() {
-        const leagueId = this.value;
+      // Event Listeners
+      leagueSelect.addEventListener('change', loadTeams);
+      homeTeamSelect.addEventListener('change', validateForm);
+      awayTeamSelect.addEventListener('change', validateForm);
+      analyzeBtn.addEventListener('click', analyzeMatch);
+      
+      // Funções
+      async function loadTeams() {
+        const leagueId = leagueSelect.value;
         
         if (!leagueId) {
           resetTeamSelects();
           return;
         }
         
-        // Verificar se já temos os times em cache
-        if (teamsCache[leagueId]) {
-          populateTeamSelects(teamsCache[leagueId]);
-          return;
-        }
-        
-        // Mostrar loading
-        prepareTeamSelectsForLoading();
-        
-        // Buscar times da API
-        fetchTeams(leagueId);
-      });
-      
-      function resetTeamSelects() {
-        homeTeamSelect.innerHTML = '<option value="">Selecione um campeonato</option>';
-        awayTeamSelect.innerHTML = '<option value="">Selecione um campeonato</option>';
-        homeTeamSelect.disabled = true;
-        awayTeamSelect.disabled = true;
-        analyzeBtn.disabled = true;
-      }
-      
-      function prepareTeamSelectsForLoading() {
-        homeTeamSelect.disabled = true;
-        awayTeamSelect.disabled = true;
-        homeTeamSelect.innerHTML = '<option value="">Carregando times...</option>';
-        awayTeamSelect.innerHTML = '<option value="">Carregando times...</option>';
-      }
-      
-      function fetchTeams(leagueId) {
-        fetch(`${API_BASE_URL}competitions/${leagueId}/teams`, {
-          headers: {
-            'X-Auth-Token': API_KEY
+        try {
+          prepareTeamSelectsForLoading();
+          
+          // Verificar cache
+          if (teamsCache[leagueId]) {
+            populateTeamSelects(teamsCache[leagueId]);
+            return;
           }
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro ao carregar times');
-          }
-          return response.json();
-        })
-        .then(data => {
+          
+          // Buscar times da API
+          const response = await fetch(`${API_BASE_URL}competitions/${leagueId}/teams`, {
+            headers: { 'X-Auth-Token': API_KEY }
+          });
+          
+          if (!response.ok) throw new Error('Erro ao carregar times');
+          
+          const data = await response.json();
+          
           if (!data.teams || data.teams.length === 0) {
-            throw new Error('Nenhum time encontrado para este campeonato');
+            throw new Error('Nenhum time encontrado');
           }
           
           // Armazenar no cache
           teamsCache[leagueId] = data.teams;
           populateTeamSelects(data.teams);
-        })
-        .catch(error => {
+          
+        } catch (error) {
           console.error('Erro:', error);
-          showError('Erro ao carregar times. Tente novamente mais tarde.');
-          homeTeamSelect.innerHTML = '<option value="">Erro ao carregar</option>';
-          awayTeamSelect.innerHTML = '<option value="">Erro ao carregar</option>';
-        });
+          showError('Falha ao carregar times. Tente novamente.');
+          resetTeamSelects();
+        }
       }
       
       function populateTeamSelects(teams) {
-        // Ordenar times alfabeticamente
+        // Ordenar times
         teams.sort((a, b) => a.name.localeCompare(b.name));
         
         homeTeamSelect.innerHTML = '<option value="">Selecione o mandante</option>';
@@ -107,57 +531,218 @@
         awayTeamSelect.disabled = false;
       }
       
-      // Habilitar botão de análise quando ambos times forem selecionados
-      homeTeamSelect.addEventListener('change', checkTeamsSelected);
-      awayTeamSelect.addEventListener('change', checkTeamsSelected);
-      
-      function checkTeamsSelected() {
+      function validateForm() {
         const homeSelected = homeTeamSelect.value && homeTeamSelect.value !== '';
         const awaySelected = awayTeamSelect.value && awayTeamSelect.value !== '';
         const differentTeams = homeTeamSelect.value !== awayTeamSelect.value;
         
         analyzeBtn.disabled = !(homeSelected && awaySelected && differentTeams);
         
-        if (!differentTeams && homeSelected && awaySelected) {
-          showError('Selecione times diferentes para análise');
+        if (homeSelected && awaySelected && !differentTeams) {
+          showError('Selecione times diferentes');
         } else {
           hideError();
         }
       }
       
-      // ... (mantenha o restante do código JavaScript igual) ...
-      
-      // Botão de análise
-      analyzeBtn.addEventListener('click', function() {
+      async function analyzeMatch() {
         const leagueId = leagueSelect.value;
         const homeTeamId = homeTeamSelect.value;
         const awayTeamId = awayTeamSelect.value;
         
         if (!leagueId || !homeTeamId || !awayTeamId) {
-          showError('Selecione um campeonato e ambos os times!');
+          showError('Selecione um campeonato e ambos os times');
           return;
         }
         
         if (homeTeamId === awayTeamId) {
-          showError('Selecione times diferentes para análise');
+          showError('Selecione times diferentes');
           return;
         }
         
-        // Mostrar loading
-        loadingDiv.style.display = 'block';
-        analysisContainer.style.display = 'none';
-        hideError();
+        try {
+          // Mostrar loading
+          loadingDiv.style.display = 'block';
+          analysisContainer.style.display = 'none';
+          hideError();
+          
+          // Buscar dados dos times
+          const leagueTeams = teamsCache[leagueId];
+          const homeTeam = leagueTeams.find(t => t.id == homeTeamId);
+          const awayTeam = leagueTeams.find(t => t.id == awayTeamId);
+          
+          if (!homeTeam || !awayTeam) throw new Error('Times não encontrados');
+          
+          // Buscar histórico
+          const stats = await fetchHeadToHead(homeTeamId, awayTeamId);
+          
+          // Exibir análise
+          displayAnalysis(stats, homeTeam, awayTeam);
+          loadingDiv.style.display = 'none';
+          analysisContainer.style.display = 'block';
+          
+        } catch (error) {
+          console.error('Erro na análise:', error);
+          loadingDiv.style.display = 'none';
+          showError(error.message || 'Erro ao analisar confronto');
+        }
+      }
+      
+      async function fetchHeadToHead(homeTeamId, awayTeamId) {
+        const cacheKey = `${homeTeamId}-${awayTeamId}`;
         
-        // Buscar dados dos times
-        const leagueTeams = teamsCache[leagueId];
-        const homeTeam = leagueTeams.find(t => t.id == homeTeamId);
-        const awayTeam = leagueTeams.find(t => t.id == awayTeamId);
+        // Verificar cache
+        if (matchesCache[cacheKey]) {
+          return matchesCache[cacheKey];
+        }
         
-        // Buscar histórico de confrontos
-        fetchHeadToHead(homeTeamId, awayTeamId, homeTeam, awayTeam);
-      });
-
-      // ... (mantenha todas as outras funções existentes) ...
+        // Buscar dados da API
+        const response = await fetch(`${API_BASE_URL}teams/${homeTeamId}/matches?status=FINISHED&limit=10`, {
+          headers: { 'X-Auth-Token': API_KEY }
+        });
+        
+        if (!response.ok) throw new Error('Erro ao buscar confrontos');
+        
+        const data = await response.json();
+        
+        // Filtrar confrontos diretos
+        const headToHeadMatches = data.matches.filter(match => 
+          (match.homeTeam.id == homeTeamId && match.awayTeam.id == awayTeamId) ||
+          (match.homeTeam.id == awayTeamId && match.awayTeam.id == homeTeamId)
+        );
+        
+        if (headToHeadMatches.length === 0) {
+          throw new Error('Nenhum confronto recente encontrado');
+        }
+        
+        // Calcular estatísticas
+        const stats = calculateStats(headToHeadMatches, homeTeamId);
+        
+        // Armazenar no cache
+        matchesCache[cacheKey] = stats;
+        return stats;
+      }
+      
+      function calculateStats(matches, homeTeamId) {
+        let stats = {
+          homeWins: 0,
+          awayWins: 0,
+          draws: 0,
+          homeGoals: 0,
+          awayGoals: 0,
+          over25: 0,
+          bothScored: 0,
+          totalMatches: matches.length
+        };
+        
+        matches.forEach(match => {
+          const isHome = match.homeTeam.id == homeTeamId;
+          const homeScore = match.score.fullTime.home || 0;
+          const awayScore = match.score.fullTime.away || 0;
+          
+          // Resultados
+          if (homeScore > awayScore) {
+            isHome ? stats.homeWins++ : stats.awayWins++;
+          } else if (awayScore > homeScore) {
+            isHome ? stats.awayWins++ : stats.homeWins++;
+          } else {
+            stats.draws++;
+          }
+          
+          // Gols
+          if (isHome) {
+            stats.homeGoals += homeScore;
+            stats.awayGoals += awayScore;
+          } else {
+            stats.homeGoals += awayScore;
+            stats.awayGoals += homeScore;
+          }
+          
+          // Estatísticas
+          if (homeScore + awayScore > 2.5) stats.over25++;
+          if (homeScore > 0 && awayScore > 0) stats.bothScored++;
+        });
+        
+        return stats;
+      }
+      
+      function displayAnalysis(stats, homeTeam, awayTeam) {
+        // Atualizar cabeçalho
+        document.getElementById('home-name').textContent = homeTeam.name;
+        document.getElementById('away-name').textContent = awayTeam.name;
+        document.getElementById('home-team-name').textContent = homeTeam.name;
+        document.getElementById('away-team-name').textContent = awayTeam.name;
+        
+        // Logos
+        updateTeamLogo('home-logo', homeTeam.crest);
+        updateTeamLogo('away-logo', awayTeam.crest);
+        
+        // Probabilidades
+        const totalMatches = stats.totalMatches;
+        const homeWinProb = Math.round((stats.homeWins / totalMatches) * 100);
+        const awayWinProb = Math.round((stats.awayWins / totalMatches) * 100);
+        const drawProb = 100 - homeWinProb - awayWinProb;
+        
+        document.getElementById('home-win-prob').textContent = `${homeWinProb}%`;
+        document.getElementById('draw-prob').textContent = `${drawProb}%`;
+        document.getElementById('away-win-prob').textContent = `${awayWinProb}%`;
+        
+        document.getElementById('home-progress').style.width = `${homeWinProb}%`;
+        document.getElementById('draw-progress').style.width = `${drawProb}%`;
+        document.getElementById('away-progress').style.width = `${awayWinProb}%`;
+        
+        // Estatísticas
+        document.getElementById('home-wins').textContent = stats.homeWins;
+        document.getElementById('away-wins').textContent = stats.awayWins;
+        document.getElementById('draws').textContent = stats.draws;
+        document.getElementById('home-goals').textContent = stats.homeGoals;
+        document.getElementById('away-goals').textContent = stats.awayGoals;
+        document.getElementById('over-25').textContent = `${Math.round((stats.over25 / totalMatches) * 100)}%`;
+        document.getElementById('both-score').textContent = `${Math.round((stats.bothScored / totalMatches) * 100)}%`;
+        
+        // Recomendações
+        document.getElementById('btts-analysis').textContent = 
+          `Nos últimos ${totalMatches} confrontos, ambos marcaram em ${stats.bothScored} jogos. ` +
+          `Média: ${(stats.homeGoals/totalMatches).toFixed(1)} (casa) e ${(stats.awayGoals/totalMatches).toFixed(1)} (fora) gols por jogo.`;
+        
+        document.getElementById('over-analysis').textContent = 
+          `${Math.round((stats.over25 / totalMatches) * 100)}% dos jogos tiveram +2.5 gols. ` +
+          `Média total: ${((stats.homeGoals + stats.awayGoals)/totalMatches).toFixed(1)} gols por jogo.`;
+      }
+      
+      function updateTeamLogo(elementId, crestUrl) {
+        const img = document.getElementById(elementId);
+        if (crestUrl) {
+          img.src = crestUrl;
+          img.style.display = 'block';
+        } else {
+          img.style.display = 'none';
+        }
+      }
+      
+      function prepareTeamSelectsForLoading() {
+        homeTeamSelect.disabled = true;
+        awayTeamSelect.disabled = true;
+        homeTeamSelect.innerHTML = '<option value="">Carregando times...</option>';
+        awayTeamSelect.innerHTML = '<option value="">Carregando times...</option>';
+      }
+      
+      function resetTeamSelects() {
+        homeTeamSelect.innerHTML = '<option value="">Selecione um campeonato</option>';
+        awayTeamSelect.innerHTML = '<option value="">Selecione um campeonato</option>';
+        homeTeamSelect.disabled = true;
+        awayTeamSelect.disabled = true;
+        analyzeBtn.disabled = true;
+      }
+      
+      function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+      }
+      
+      function hideError() {
+        errorMessage.style.display = 'none';
+      }
     });
   </script>
 </body>
