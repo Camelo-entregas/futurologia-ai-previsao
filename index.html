@@ -7,66 +7,649 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Seu CSS completo aqui (não remova nada) */
+    :root {
+      --primary: #4CAF50; /* Verde principal */
+      --primary-light: #81C784; /* Verde claro */
+      --primary-dark: #388E3C; /* Verde escuro */
+      --secondary: #8BC34A; /* Verde secundário */
+      --accent: #CDDC39; /* Verde amarelado */
+      --dark: #2E7D32; /* Verde mais escuro para texto */
+      --light: #E8F5E9; /* Verde muito claro para fundo */
+      --white: #FFFFFF;
+      --text: #1B5E20; /* Verde escuro para texto */
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background-color: var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .logo i {
+      color: var(--primary);
+    }
+    
+    .selection-panel {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .selection-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .selection-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    
+    .select-wrapper {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid var(--primary-light);
+      border-radius: 8px;
+      font-size: 1rem;
+      color: var(--text);
+      background-color: var(--light);
+    }
+    
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary-light);
+      color: white;
+    }
+    
+    .btn-large {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+    
+    .analysis-container {
+      display: none; /* Inicialmente escondido */
+      background: var(--white);
+      border-radius: 10px;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .match-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .team {
+      text-align: center;
+      flex: 1;
+      min-width: 150px;
+    }
+    
+    .team-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
+    
+    .vs {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .stat-card {
+      background: var(--light);
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-title {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .progress-container {
+      margin: 1.5rem 0;
+    }
+    
+    .progress-title {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background: var(--light);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      border-radius: 5px;
+      background-color: var(--primary);
+    }
+    
+    .recommendations {
+      margin-top: 2rem;
+    }
+    
+    .recommendation-card {
+      background: rgba(76, 175, 80, 0.1);
+      padding: 1.5rem;
+      border-left: 4px solid var(--primary);
+      margin-bottom: 1rem;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .recommendation-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary-dark);
+    }
+    
+    .confidence {
+      background: var(--primary);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .spinner {
+      border: 4px solid var(--primary-light);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+      .selection-group {
+        flex-direction: column;
+      }
+      
+      .select-wrapper {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Seu HTML completo aqui (não remova nada) -->
+  <header>
+    <div class="container">
+      <div class="logo">
+        <i class="fas fa-robot"></i>
+        <span>FuturoLogia IA</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="selection-panel">
+      <h2 class="selection-title">
+        <i class="fas fa-futbol"></i> Selecione o Confronto
+      </h2>
+      
+      <div class="selection-group">
+        <div class="select-wrapper">
+          <label for="league-select">Campeonato:</label>
+          <select id="league-select">
+            <option value="">Selecione um campeonato</option>
+            <option value="71">Brasileirão Série A</option>
+            <option value="39">Premier League</option>
+            <option value="140">La Liga</option>
+            <option value="135">Serie A (Itália)</option>
+            <option value="78">Bundesliga</option>
+          </select>
+        </div>
+        
+        <div class="select-wrapper">
+          <label for="home-team">Time Mandante:</label>
+          <select id="home-team" disabled>
+            <option value="">Selecione um campeonato</option>
+          </select>
+        </div>
+        
+        <div class="select-wrapper">
+          <label for="away-team">Time Visitante:</label>
+          <select id="away-team" disabled>
+            <option value="">Selecione um campeonato</option>
+          </select>
+        </div>
+      </div>
+      
+      <button id="analyze-btn" class="btn btn-primary btn-large" disabled>
+        <i class="fas fa-chart-line"></i> Analisar Confronto
+      </button>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Analisando dados dos últimos 5 jogos...</p>
+    </div>
+    
+    <div class="analysis-container" id="analysis-container">
+      <div class="match-header">
+        <div class="team">
+          <img id="home-logo" src="" alt="Time Mandante" class="team-logo">
+          <h3 id="home-name">Time A</h3>
+        </div>
+        <div class="vs">VS</div>
+        <div class="team">
+          <img id="away-logo" src="" alt="Time Visitante" class="team-logo">
+          <h3 id="away-name">Time B</h3>
+        </div>
+      </div>
+      
+      <h2 class="selection-title">
+        <i class="fas fa-chart-pie"></i> Probabilidades do Jogo
+      </h2>
+      
+      <div class="progress-container">
+        <div class="progress-title">
+          <span id="home-team-name">Time A</span>
+          <span id="home-win-prob">60%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="home-progress" style="width: 60%"></div>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-title">
+          <span>Empate</span>
+          <span id="draw-prob">25%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="draw-progress" style="width: 25%"></div>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-title">
+          <span id="away-team-name">Time B</span>
+          <span id="away-win-prob">15%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="away-progress" style="width: 15%"></div>
+        </div>
+      </div>
+      
+      <h2 class="selection-title">
+        <i class="fas fa-tachometer-alt"></i> Estatísticas dos Últimos 5 Confrontos
+      </h2>
+      
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-title">Vitórias do Mandante</div>
+          <div class="stat-value" id="home-wins">3</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Vitórias do Visitante</div>
+          <div class="stat-value" id="away-wins">1</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Empates</div>
+          <div class="stat-value" id="draws">1</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Gols do Mandante</div>
+          <div class="stat-value" id="home-goals">8</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Gols do Visitante</div>
+          <div class="stat-value" id="away-goals">4</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Over 2.5 Gols</div>
+          <div class="stat-value" id="over-25">80%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Ambos Marcam</div>
+          <div class="stat-value" id="both-score">60%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Cartões Amarelos</div>
+          <div class="stat-value" id="yellow-cards">18</div>
+        </div>
+      </div>
+      
+      <h2 class="selection-title">
+        <i class="fas fa-lightbulb"></i> Recomendações da IA
+      </h2>
+      
+      <div class="recommendations">
+        <div class="recommendation-card">
+          <h3 class="recommendation-title">
+            <i class="fas fa-bullseye"></i> Ambos Marcam (BTTS)
+            <span class="confidence">85% confiança</span>
+          </h3>
+          <p id="btts-analysis">Nos últimos 5 confrontos, ambos os times marcaram em 4 oportunidades. Média de 1.8 gols por time por jogo.</p>
+        </div>
+        
+        <div class="recommendation-card">
+          <h3 class="recommendation-title">
+            <i class="fas fa-arrow-up"></i> Over 2.5 Gols
+            <span class="confidence">78% confiança</span>
+          </h3>
+          <p id="over-analysis">80% dos últimos confrontos tiveram 3 ou mais gols. Média total de 2.4 gols por jogo.</p>
+        </div>
+        
+        <div class="recommendation-card">
+          <h3 class="recommendation-title">
+            <i class="fas fa-clock"></i> Resultado no 1º Tempo
+            <span class="confidence">65% confiança</span>
+          </h3>
+          <p id="half-time-analysis">O mandante venceu o 1º tempo em 60% dos últimos confrontos. Média de 1.2 gols no primeiro tempo.</p>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <script>
-    // Versão SIMPLIFICADA e TESTADA do código
+    // Dados mockados - substitua pela API real
+    const teamsData = {
+      '71': [ // Brasileirão Série A
+        { id: 131, name: 'Flamengo', logo: 'https://api.football-data.org/assets/teams/1769/crest.png' },
+        { id: 134, name: 'Palmeiras', logo: 'https://api.football-data.org/assets/teams/1776/crest.png' },
+        { id: 137, name: 'Fluminense', logo: 'https://api.football-data.org/assets/teams/1771/crest.png' },
+        { id: 138, name: 'Corinthians', logo: 'https://api.football-data.org/assets/teams/1775/crest.png' }
+      ],
+      '39': [ // Premier League
+        { id: 40, name: 'Liverpool', logo: 'https://api.football-data.org/assets/teams/64/crest.png' },
+        { id: 50, name: 'Manchester City', logo: 'https://api.football-data.org/assets/teams/65/crest.png' },
+        { id: 42, name: 'Arsenal', logo: 'https://api.football-data.org/assets/teams/57/crest.png' }
+      ]
+    };
+
+    // Histórico de confrontos mockado
+    const matchesHistory = {
+      '131-134': { // Flamengo vs Palmeiras
+        homeWins: 3,
+        awayWins: 1,
+        draws: 1,
+        homeGoals: 8,
+        awayGoals: 4,
+        over25: 4,
+        bothScored: 3,
+        yellowCards: 18,
+        redCards: 2
+      },
+      '40-50': { // Liverpool vs Man City
+        homeWins: 2,
+        awayWins: 2,
+        draws: 1,
+        homeGoals: 7,
+        awayGoals: 7,
+        over25: 3,
+        bothScored: 4,
+        yellowCards: 15,
+        redCards: 1
+      }
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('Script iniciado'); // Verificação inicial
-      
-      // Configurações básicas
-      const API_KEY = '62271872bf054aeb61b121932c95d3ee';
-      const API_BASE_URL = 'https://api.football-data.org/v4/';
-      
-      // Elementos DOM (com verificações)
       const leagueSelect = document.getElementById('league-select');
       const homeTeamSelect = document.getElementById('home-team');
       const awayTeamSelect = document.getElementById('away-team');
+      const analyzeBtn = document.getElementById('analyze-btn');
+      const loadingDiv = document.getElementById('loading');
+      const analysisContainer = document.getElementById('analysis-container');
       
-      if (!leagueSelect || !homeTeamSelect || !awayTeamSelect) {
-        console.error('Elementos não encontrados! Verifique os IDs');
-        return;
-      }
-
-      // Dados mockados PARA TESTE INICIAL (remova depois)
-      const teamsMock = {
-        '2013': [ // Brasileirão
-          {id: 668, name: 'Flamengo', crest: 'https://crests.football-data.org/668.png'},
-          {id: 670, name: 'Palmeiras', crest: 'https://crests.football-data.org/670.png'}
-        ]
-      };
-
-      // Função básica para carregar times (mockada)
-      function loadTeams() {
-        const leagueId = leagueSelect.value;
-        console.log('Campeonato selecionado:', leagueId);
+      // Carregar times quando selecionar campeonato
+      leagueSelect.addEventListener('change', function() {
+        const leagueId = this.value;
         
-        if (!leagueId) return;
-        
-        // USANDO DADOS MOCKADOS (substitua pela API real depois)
-        if (teamsMock[leagueId]) {
-          const teams = teamsMock[leagueId];
-          homeTeamSelect.innerHTML = '<option value="">Selecione</option>';
-          awayTeamSelect.innerHTML = '<option value="">Selecione</option>';
-          
-          teams.forEach(team => {
-            homeTeamSelect.innerHTML += `<option value="${team.id}">${team.name}</option>`;
-            awayTeamSelect.innerHTML += `<option value="${team.id}">${team.name}</option>`;
-          });
-          
-          homeTeamSelect.disabled = false;
-          awayTeamSelect.disabled = false;
+        if (!leagueId) {
+          homeTeamSelect.innerHTML = '<option value="">Selecione um campeonato</option>';
+          awayTeamSelect.innerHTML = '<option value="">Selecione um campeonato</option>';
+          homeTeamSelect.disabled = true;
+          awayTeamSelect.disabled = true;
+          analyzeBtn.disabled = true;
+          return;
         }
-      }
-
-      // Event listeners básicos
-      leagueSelect.addEventListener('change', loadTeams);
+        
+        // Carregar times do campeonato selecionado
+        const teams = teamsData[leagueId] || [];
+        
+        homeTeamSelect.innerHTML = '<option value="">Selecione o mandante</option>';
+        awayTeamSelect.innerHTML = '<option value="">Selecione o visitante</option>';
+        
+        teams.forEach(team => {
+          homeTeamSelect.innerHTML += `<option value="${team.id}">${team.name}</option>`;
+          awayTeamSelect.innerHTML += `<option value="${team.id}">${team.name}</option>`;
+        });
+        
+        homeTeamSelect.disabled = false;
+        awayTeamSelect.disabled = false;
+      });
       
-      console.log('Configuração inicial completa'); // Verificação final
+      // Habilitar botão de análise quando ambos times forem selecionados
+      homeTeamSelect.addEventListener('change', checkTeamsSelected);
+      awayTeamSelect.addEventListener('change', checkTeamsSelected);
+      
+      function checkTeamsSelected() {
+        const homeSelected = homeTeamSelect.value && homeTeamSelect.value !== '';
+        const awaySelected = awayTeamSelect.value && awayTeamSelect.value !== '';
+        
+        analyzeBtn.disabled = !(homeSelected && awaySelected);
+      }
+      
+      // Botão de análise
+      analyzeBtn.addEventListener('click', function() {
+        const leagueId = leagueSelect.value;
+        const homeTeamId = homeTeamSelect.value;
+        const awayTeamId = awayTeamSelect.value;
+        
+        if (!leagueId || !homeTeamId || !awayTeamId) {
+          alert('Selecione um campeonato e ambos os times!');
+          return;
+        }
+        
+        // Mostrar loading
+        loadingDiv.style.display = 'block';
+        analysisContainer.style.display = 'none';
+        
+        // Simular carregamento (substitua pela chamada real à API)
+        setTimeout(() => {
+          analyzeMatch(homeTeamId, awayTeamId);
+          loadingDiv.style.display = 'none';
+          analysisContainer.style.display = 'block';
+        }, 1500);
+      });
+      
+      function analyzeMatch(homeTeamId, awayTeamId) {
+        // Encontrar os times selecionados
+        const leagueId = leagueSelect.value;
+        const teams = teamsData[leagueId] || [];
+        const homeTeam = teams.find(t => t.id == homeTeamId);
+        const awayTeam = teams.find(t => t.id == awayTeamId);
+        
+        // Atualizar cabeçalho com os times
+        document.getElementById('home-name').textContent = homeTeam.name;
+        document.getElementById('away-name').textContent = awayTeam.name;
+        document.getElementById('home-team-name').textContent = homeTeam.name;
+        document.getElementById('away-team-name').textContent = awayTeam.name;
+        
+        if (homeTeam.logo) {
+          document.getElementById('home-logo').src = homeTeam.logo;
+          document.getElementById('home-logo').style.display = 'block';
+        } else {
+          document.getElementById('home-logo').style.display = 'none';
+        }
+        
+        if (awayTeam.logo) {
+          document.getElementById('away-logo').src = awayTeam.logo;
+          document.getElementById('away-logo').style.display = 'block';
+        } else {
+          document.getElementById('away-logo').style.display = 'none';
+        }
+        
+        // Buscar histórico de confrontos (mockado)
+        const matchKey = `${homeTeamId}-${awayTeamId}`;
+        const history = matchesHistory[matchKey] || {
+          homeWins: 2,
+          awayWins: 1,
+          draws: 2,
+          homeGoals: 6,
+          awayGoals: 5,
+          over25: 3,
+          bothScored: 3,
+          yellowCards: 12,
+          redCards: 1
+        };
+        
+        // Calcular probabilidades (simplificado)
+        const totalMatches = history.homeWins + history.awayWins + history.draws;
+        const homeWinProb = Math.round((history.homeWins / totalMatches) * 100);
+        const awayWinProb = Math.round((history.awayWins / totalMatches) * 100);
+        const drawProb = 100 - homeWinProb - awayWinProb;
+        
+        // Atualizar estatísticas
+        document.getElementById('home-wins').textContent = history.homeWins;
+        document.getElementById('away-wins').textContent = history.awayWins;
+        document.getElementById('draws').textContent = history.draws;
+        document.getElementById('home-goals').textContent = history.homeGoals;
+        document.getElementById('away-goals').textContent = history.awayGoals;
+        document.getElementById('over-25').textContent = Math.round((history.over25 / totalMatches) * 100) + '%';
+        document.getElementById('both-score').textContent = Math.round((history.bothScored / totalMatches) * 100) + '%';
+        document.getElementById('yellow-cards').textContent = history.yellowCards;
+        
+        // Atualizar probabilidades
+        document.getElementById('home-win-prob').textContent = homeWinProb + '%';
+        document.getElementById('draw-prob').textContent = drawProb + '%';
+        document.getElementById('away-win-prob').textContent = awayWinProb + '%';
+        
+        document.getElementById('home-progress').style.width = homeWinProb + '%';
+        document.getElementById('draw-progress').style.width = drawProb + '%';
+        document.getElementById('away-progress').style.width = awayWinProb + '%';
+        
+        // Atualizar recomendações
+        document.getElementById('btts-analysis').textContent = 
+          `Nos últimos ${totalMatches} confrontos, ambos os times marcaram em ${history.bothScored} oportunidades. ` +
+          `Média de ${(history.homeGoals/totalMatches).toFixed(1)} gols do mandante e ${(history.awayGoals/totalMatches).toFixed(1)} gols do visitante por jogo.`;
+        
+        document.getElementById('over-analysis').textContent = 
+          `${Math.round((history.over25 / totalMatches) * 100)}% dos últimos confrontos tiveram 3 ou mais gols. ` +
+          `Média total de ${((history.homeGoals + history.awayGoals)/totalMatches).toFixed(1)} gols por jogo.`;
+        
+        document.getElementById('half-time-analysis').textContent = 
+          `O mandante venceu o 1º tempo em ${Math.round(history.homeWins/totalMatches * 60)}% dos últimos confrontos. ` +
+          `Média de ${((history.homeGoals/totalMatches) * 0.6).toFixed(1)} gols no primeiro tempo.`;
+      }
     });
   </script>
 </body>
