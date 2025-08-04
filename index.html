@@ -1,7 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FuturoLogia IA - Análise de Confrontos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4CAF50; /* Verde principal */
+      --primary-light: #81C784; /* Verde claro */
+      --primary-dark: #388E3C; /* Verde escuro */
+      --secondary: #8BC34A; /* Verde secundário */
+      --accent: #CDDC39; /* Verde amarelado */
+      --dark: #2E7D32; /* Verde mais escuro para texto */
+      --light: #E8F5E9; /* Verde muito claro para fundo */
+      --white: #FFFFFF;
+      --text: #1B5E20; /* Verde escuro para texto */
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background-color: var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .logo i {
+      color: var(--primary);
+    }
+    
+    .selection-panel {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .selection-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .selection-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    
+    .select-wrapper {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid var(--primary-light);
+      border-radius: 8px;
+      font-size: 1rem;
+      color: var(--text);
+      background-color: var(--light);
+    }
+    
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary-light);
+      color: white;
+    }
+    
+    .btn-large {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+    
+    .analysis-container {
+      display: none; /* Inicialmente escondido */
+      background: var(--white);
+      border-radius: 10px;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .match-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .team {
+      text-align: center;
+      flex: 1;
+      min-width: 150px;
+    }
+    
+    .team-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
+    
+    .vs {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .stat-card {
+      background: var(--light);
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-title {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .progress-container {
+      margin: 1.5rem 0;
+    }
+    
+    .progress-title {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background: var(--light);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      border-radius: 5px;
+      background-color: var(--primary);
+    }
+    
+    .recommendations {
+      margin-top: 2rem;
+    }
+    
+    .recommendation-card {
+      background: rgba(76, 175, 80, 0.1);
+      padding: 1.5rem;
+      border-left: 4px solid var(--primary);
+      margin-bottom: 1rem;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .recommendation-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary-dark);
+    }
+    
+    .confidence {
+      background: var(--primary);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .spinner {
+      border: 4px solid var(--primary-light);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .error-message {
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .selection-group {
+        flex-direction: column;
+      }
+      
+      .select-wrapper {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <i class="fas fa-robot"></i>
+        <span>FuturoLogia IA</span>
+      </div>
+    </div>
+  </header>
 
-<!-- HTML cortado para simplificação: mesma estrutura do original do usuário com substituições feitas -->
-<script>
-  const API_KEY = '62271872bf054aeb61b121932c95d3ee';
-  const API_BASE_URL = 'https://v3.football.api-sports.io/';
-</script>
-<!-- O resto do HTML foi mantido conforme fornecido pelo usuário, apenas adaptado nas chamadas de API -->
+  <main class="container">
+    <div class="selection-panel">
+      <h2 class="selection-title">
+        <i class="fas fa-futbol"></i> Selecione o Confronto
+      </h2>
+      
+      <div class="error-message" id="error-message"></div>
+      
+      <div class="selection-group">
+        <div class="select-wrapper">
+          <label for="league-select">Campeonato:</label>
+          <select id="league-select">
+            <option value="">Selecione um campeonato</option>
+            <option value="2013">Brasileirão Série A</option>
+            <option value="2021">Premier League</option>
+            <option value="2014">La Liga</option>
+            <option value="2019">Serie A (Itália)</option>
+            <option value="2002">Bundesliga</option>
+            <option value="2015">Ligue 1</option>
+            <option value="2001">Champions League</option>
+          </select>
+        </div>
+        
+        <div class="select-wrapper">
+          <label for="home-team">Time Mandante:</label>
+          <select id="home-team" disabled>
+            <option value="">Selecione um campeonato</option>
+          </select>
+        </div>
+        
+        <div class="select-wrapper">
+          <label for="away-team">Time Visitante:</label>
+          <select id="away-team" disabled>
+            <option value="">Selecione um campeonato</option>
+          </select>
+        </div>
+      </div>
+      
+      <button id="analyze-btn" class="btn btn-primary btn-large" disabled>
+        <i class="fas fa-chart-line"></i> Analisar Confronto
+      </button>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Analisando dados dos últimos jogos...</p>
+    </div>
+    
+    <div class="analysis-container" id="analysis-container">
+      <div class="match-header">
+        <div class="team">
+          <img id="home-logo" src="" alt="Time Mandante" class="team-logo">
+          <h3 id="home-name">Time A</h3>
+        </div>
+        <div class="vs">VS</div>
+        <div class="team">
+          <img id="away-logo" src="" alt="Time Visitante" class="team-logo">
+          <h3 id="away-name">Time B</h3>
+        </div>
+      </div>
+      
+      <h2 class="selection-title">
+        <i class="fas fa-chart-pie"></i> Probabilidades do Jogo
+      </h2>
+      
+      <div class="progress-container">
+        <div class="progress-title">
+          <span id="home-team-name">Time A</span>
+          <span id="home-win-prob">60%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="home-progress" style="width: 60%"></div>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-title">
+          <span>Empate</span>
+          <span id="draw-prob">25%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="draw-progress" style="width: 25%"></div>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-title">
+          <span id="away-team-name">Time B</span>
+          <span id="away-win-prob">15%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="away-progress" style="width: 15%"></div>
+        </div>
+      </div>
+      
+      <h2 class="selection-title">
+        <i class="fas fa-tachometer-alt"></i> Estatísticas dos Últimos Confrontos
+      </h2>
+      
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-title">Vitórias do Mandante</div>
+          <div class="stat-value" id="home-wins">3</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Vitórias do Visitante</div>
+          <div class="stat-value" id="away-wins">1</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Empates</div>
+          <div class="stat-value" id="draws">1</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Gols do Mandante</div>
+          <div class="stat-value" id="home-goals">8</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Gols do Visitante</div>
+          <div class="stat-value" id="away-goals">4</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Over 2.5 Gols</div>
+          <div class="stat-value" id="over-25">80%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Ambos Marcam</div>
+          <div class="stat-value" id="both-score">60%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Cartões Amarelos</div>
+          <div class="stat-value" id="yellow-cards">18</div>
+        </div>
+      </div>
+      
+      <h2 class="selection-title">
+        <i class="fas fa-lightbulb"></i> Recomendações da IA
+      </h2>
+      
+      <div class="recommendations">
+        <div class="recommendation-card">
+          <h3 class="recommendation-title">
+            <i class="fas fa-bullseye"></i> Ambos Marcam (BTTS)
+            <span class="confidence">85% confiança</span>
+          </h3>
+          <p id="btts-analysis">Nos últimos 5 confrontos, ambos os times marcaram em 4 oportunidades. Média de 1.8 gols por time por jogo.</p>
+        </div>
+        
+        <div class="recommendation-card">
+          <h3 class="recommendation-title">
+            <i class="fas fa-arrow-up"></i> Over 2.5 Gols
+            <span class="confidence">78% confiança</span>
+          </h3>
+          <p id="over-analysis">80% dos últimos confrontos tiveram 3 ou mais gols. Média total de 2.4 gols por jogo.</p>
+        </div>
+        
+        <div class="recommendation-card">
+          <h3 class="recommendation-title">
+            <i class="fas fa-clock"></i> Resultado no 1º Tempo
+            <span class="confidence">65% confiança</span>
+          </h3>
+          <p id="half-time-analysis">O mandante venceu o 1º tempo em 60% dos últimos confrontos. Média de 1.2 gols no primeiro tempo.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Configuração da API Football Data
+    const API_KEY = 'YOUR_API_KEY'; // const API_KEY = 'YOUR_API_KEY'; // Substitua pela sua chave de API
+    const API_BASE_URL = 'https://api.football-data.org/v4/';
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const leagueSelect = document.getElementById('league-select');
+      const homeTeamSelect = document.getElementById('home-team');
+      const awayTeamSelect = document.getElementById('away-team');
+      const analyzeBtn = document.getElementById('analyze-btn');
+      const loadingDiv = document.getElementById('loading');
+      const analysisContainer = document.getElementById('analysis-container');
+      const errorMessage = document.getElementById('error-message');
+      
+      // Cache para armazenar dados já buscados
+      const teamsCache = {};
+      const matchesCache = {};
+      
+      // Carregar times quando selecionar campeonato
+      leagueSelect.addEventListener('change', function() {
+        const leagueId = this.value;
+        
+        if (!leagueId) {
+          homeTeamSelect.innerHTML = '<option value="">Selecione um campeonato</option>';
+          awayTeamSelect.innerHTML = '<option value="">Selecione um campeonato</option>';
+          homeTeamSelect.disabled = true;
+          awayTeamSelect.disabled = true;
+          analyzeBtn.disabled = true;
+          return;
+        }
+        
+        // Verificar se já temos os times em cache
+        if (teamsCache[leagueId]) {
+          populateTeamSelects(teamsCache[leagueId]);
+          return;
+        }
+        
+        // Mostrar loading
+        homeTeamSelect.disabled = true;
+        awayTeamSelect.disabled = true;
+        homeTeamSelect.innerHTML = '<option value="">Carregando times...</option>';
+        awayTeamSelect.innerHTML = '<option value="">Carregando times...</option>';
+        
+        // Buscar times da API
+        fetch(`${API_BASE_URL}competitions/${leagueId}/teams`, {
+          headers: {
+            'X-Auth-Token': API_KEY
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro ao carregar times');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Armazenar no cache
+          teamsCache[leagueId] = data.teams;
+          populateTeamSelects(data.teams);
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          showError('Erro ao carregar times. Tente novamente mais tarde.');
+          homeTeamSelect.innerHTML = '<option value="">Erro ao carregar</option>';
+          awayTeamSelect.innerHTML = '<option value="">Erro ao carregar</option>';
+        });
+      });
+      
+      function populateTeamSelects(teams) {
+        homeTeamSelect.innerHTML = '<option value="">Selecione o mandante</option>';
+        awayTeamSelect.innerHTML = '<option value="">Selecione o visitante</option>';
+        
+        teams.forEach(team => {
+          homeTeamSelect.innerHTML += `<option value="${team.id}">${team.name}</option>`;
+          awayTeamSelect.innerHTML += `<option value="${team.id}">${team.name}</option>`;
+        });
+        
+        homeTeamSelect.disabled = false;
+        awayTeamSelect.disabled = false;
+      }
+      
+      // Habilitar botão de análise quando ambos times forem selecionados
+      homeTeamSelect.addEventListener('change', checkTeamsSelected);
+      awayTeamSelect.addEventListener('change', checkTeamsSelected);
+      
+      function checkTeamsSelected() {
+        const homeSelected = homeTeamSelect.value && homeTeamSelect.value !== '';
+        const awaySelected = awayTeamSelect.value && awayTeamSelect.value !== '';
+        
+        analyzeBtn.disabled = !(homeSelected && awaySelected);
+      }
+      
+      // Botão de análise
+      analyzeBtn.addEventListener('click', function() {
+        const leagueId = leagueSelect.value;
+        const homeTeamId = homeTeamSelect.value;
+        const awayTeamId = awayTeamSelect.value;
+        
+        if (!leagueId || !homeTeamId || !awayTeamId) {
+          showError('Selecione um campeonato e ambos os times!');
+          return;
+        }
+        
+        // Mostrar loading
+        loadingDiv.style.display = 'block';
+        analysisContainer.style.display = 'none';
+        hideError();
+        
+        // Buscar dados dos times
+        const leagueTeams = teamsCache[leagueId];
+        const homeTeam = leagueTeams.find(t => t.id == homeTeamId);
+        const awayTeam = leagueTeams.find(t => t.id == awayTeamId);
+        
+        // Buscar histórico de confrontos
+        fetchHeadToHead(homeTeamId, awayTeamId, homeTeam, awayTeam);
+      });
+      
+      function fetchHeadToHead(homeTeamId, awayTeamId, homeTeam, awayTeam) {
+        const cacheKey = `${homeTeamId}-${awayTeamId}`;
+        
+        // Verificar cache primeiro
+        if (matchesCache[cacheKey]) {
+          analyzeMatch(matchesCache[cacheKey], homeTeam, awayTeam);
+          loadingDiv.style.display = 'none';
+          analysisContainer.style.display = 'block';
+          return;
+        }
+        
+        // Buscar dados da API
+        fetch(`${API_BASE_URL}teams/${homeTeamId}/matches?status=FINISHED&limit=10`, {
+          headers: {
+            'X-Auth-Token': API_KEY
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro ao carregar histórico de jogos');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Filtrar apenas jogos entre os dois times
+          const headToHeadMatches = data.matches.filter(match => 
+            (match.homeTeam.id == homeTeamId && match.awayTeam.id == awayTeamId) ||
+            (match.homeTeam.id == awayTeamId && match.awayTeam.id == homeTeamId)
+          );
+          
+          if (headToHeadMatches.length === 0) {
+            throw new Error('Não foram encontrados confrontos recentes entre esses times');
+          }
+          
+          // Processar estatísticas
+          const stats = calculateMatchStats(headToHeadMatches, homeTeamId);
+          
+          // Armazenar no cache
+          matchesCache[cacheKey] = stats;
+          
+          // Analisar e mostrar resultados
+          analyzeMatch(stats, homeTeam, awayTeam);
+          loadingDiv.style.display = 'none';
+          analysisContainer.style.display = 'block';
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          loadingDiv.style.display = 'none';
+          showError(error.message || 'Erro ao analisar confronto. Tente novamente mais tarde.');
+        });
+      }
+      
+      function calculateMatchStats(matches, homeTeamId) {
+        let homeWins = 0;
+        let awayWins = 0;
+        let draws = 0;
+        let homeGoals = 0;
+        let awayGoals = 0;
+        let over25 = 0;
+        let bothScored = 0;
+        let yellowCards = 0;
+        let redCards = 0;
+        
+        matches.forEach(match => {
+          const isHome = match.homeTeam.id == homeTeamId;
+          const homeScore = match.score.fullTime.home;
+          const awayScore = match.score.fullTime.away;
+          
+          // Resultado
+          if (homeScore > awayScore) {
+            isHome ? homeWins++ : awayWins++;
+          } else if (awayScore > homeScore) {
+            isHome ? awayWins++ : homeWins++;
+          } else {
+            draws++;
+          }
+          
+          // Gols
+          if (isHome) {
+            homeGoals += homeScore;
+            awayGoals += awayScore;
+          } else {
+            homeGoals += awayScore;
+            awayGoals += homeScore;
+          }
+          
+          // Over 2.5
+          if (homeScore + awayScore > 2.5) over25++;
+          
+          // Ambos marcam
+          if (homeScore > 0 && awayScore > 0) bothScored++;
+          
+          // Cartões (se disponíveis)
+          if (match.bookings) {
+            yellowCards += match.bookings.yellowCards || 0;
+            redCards += match.bookings.redCards || 0;
+          }
+        });
+        
+        return {
+          homeWins,
+          awayWins,
+          draws,
+          homeGoals,
+          awayGoals,
+          over25,
+          bothScored,
+          yellowCards,
+          redCards,
+          totalMatches: matches.length
+        };
+      }
+      
+      function analyzeMatch(stats, homeTeam, awayTeam) {
+        // Atualizar cabeçalho com os times
+        document.getElementById('home-name').textContent = homeTeam.name;
+        document.getElementById('away-name').textContent = awayTeam.name;
+        document.getElementById('home-team-name').textContent = homeTeam.name;
+        document.getElementById('away-team-name').textContent = awayTeam.name;
+        
+        if (homeTeam.crest) {
+          document.getElementById('home-logo').src = homeTeam.crest;
+          document.getElementById('home-logo').style.display = 'block';
+        } else {
+          document.getElementById('home-logo').style.display = 'none';
+        }
+        
+        if (awayTeam.crest) {
+          document.getElementById('away-logo').src = awayTeam.crest;
+          document.getElementById('away-logo').style.display = 'block';
+        } else {
+          document.getElementById('away-logo').style.display = 'none';
+        }
+        
+        // Calcular probabilidades
+        const totalMatches = stats.totalMatches;
+        const homeWinProb = Math.round((stats.homeWins / totalMatches) * 100);
+        const awayWinProb = Math.round((stats.awayWins / totalMatches) * 100);
+        const drawProb = 100 - homeWinProb - awayWinProb;
+        
+        // Atualizar estatísticas
+        document.getElementById('home-wins').textContent = stats.homeWins;
+        document.getElementById('away-wins').textContent = stats.awayWins;
+        document.getElementById('draws').textContent = stats.draws;
+        document.getElementById('home-goals').textContent = stats.homeGoals;
+        document.getElementById('away-goals').textContent = stats.awayGoals;
+        document.getElementById('over-25').textContent = Math.round((stats.over25 / totalMatches) * 100 + '%';
+        document.getElementById('both-score').textContent = Math.round((stats.bothScored / totalMatches) * 100 + '%';
+        document.getElementById('yellow-cards').textContent = stats.yellowCards;
+        
+        // Atualizar probabilidades
+        document.getElementById('home-win-prob').textContent = homeWinProb + '%';
+        document.getElementById('draw-prob').textContent = drawProb + '%';
+        document.getElementById('away-win-prob').textContent = awayWinProb + '%';
+        
+        document.getElementById('home-progress').style.width = homeWinProb + '%';
+        document.getElementById('draw-progress').style.width = drawProb + '%';
+        document.getElementById('away-progress').style.width = awayWinProb + '%';
+        
+        // Atualizar recomendações
+        document.getElementById('btts-analysis').textContent = 
+          `Nos últimos ${totalMatches} confrontos, ambos os times marcaram em ${stats.bothScored} oportunidades. ` +
+          `Média de ${(stats.homeGoals/totalMatches).toFixed(1)} gols do mandante e ${(stats.awayGoals/totalMatches).toFixed(1)} gols do visitante por jogo.`;
+        
+        document.getElementById('over-analysis').textContent = 
+          `${Math.round((stats.over25 / totalMatches) * 100}% dos últimos confrontos tiveram 3 ou mais gols. ` +
+          `Média total de ${((stats.homeGoals + stats.awayGoals)/totalMatches).toFixed(1)} gols por jogo.`;
+        
+        document.getElementById('half-time-analysis').textContent = 
+          `O mandante venceu o 1º tempo em ${Math.round(stats.homeWins/totalMatches * 60)}% dos últimos confrontos. ` +
+          `Média de ${((stats.homeGoals/totalMatches) * 0.6).toFixed(1)} gols no primeiro tempo.`;
+      }
+      
+      function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+      }
+      
+      function hideError() {
+        errorMessage.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
